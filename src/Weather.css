@@ -1,0 +1,41 @@
+.Weather {
+  max-width: 800px;
+  padding: 10px;
+  margin: 30px auto;
+  border: 1px solid gray;
+  border-radius: 5px;
+  font-family: "Dosis", sans-serif;
+  background: #71a0a5;
+}
+.today,
+.today-details {
+  padding: 5px;
+  margin: 20px auto;
+}
+
+.daily {
+  background-color: #acc6aa;
+  border: 1px solid white;
+  border-radius: 5px;
+  margin-top: 0px auto;
+}
+h1 {
+  font-weight: bold;
+  font-size: 70px;
+}
+h2,
+h3,
+h4 {
+  font-weight: lighter;
+  font-size: 20px;
+}
+
+ul {
+  line-height: 4.75;
+  text-align: left;
+  font-weight: normal;
+}
+
+li {
+  list-style-type: none;
+}
