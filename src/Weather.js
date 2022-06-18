@@ -1,12 +1,13 @@
 import React, { useState } from "react";
-import FormattedDate from "./FormattedDate";
+import WeatherInfo from "./WeatherInfo";
 import axios from "axios";
 import "./Weather.css";
 
 export default function Weather(props) {
   const [weatherData, setWeatherData] = useState({ ready: false });
+  const [city, setCity] = useState(props.defaultCity);
+
   function handleResponse(response) {
-    console.log(response.data);
     setWeatherData({
       ready: true,
       temperature: response.data.main.temp,
@@ -15,10 +16,25 @@ export default function Weather(props) {
       humidity: response.data.main.humidity,
       date: new Date(response.data.dt * 1000),
       description: response.data.weather[0].description,
-      iconUrl: "https://ssl.gstatic.com/onebox/weather/64/partly_cloudy.png",
+      iconUrl: `http://openweathermap.org/img/wn/${response.data.weather[0].icon}@2x.png`,
       wind: response.data.wind.speed,
       city: response.data.name,
     });
+  }
+
+  function search() {
+    const apiKey = "b81ed97f9866e819de89275fbfb832d1";
+    let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=imperial`;
+    axios.get(apiUrl).then(handleResponse);
+  }
+
+  function handleSubmit(event) {
+    event.preventDefault();
+    search();
+  }
+
+  function handleCityChange(event) {
+    setCity(event.target.value);
   }
 
   if (weatherData.ready) {
@@ -27,14 +43,15 @@ export default function Weather(props) {
         <div className="Weather">
           <div className="row mt-2 mb-2">
             <div className="col-md-12 text-center">
-              <form className="mb-3">
+              <form className="mb-3" onSubmit={handleSubmit}>
                 <div className="row">
                   <div className="col-9">
                     <input
                       type="search"
                       placeholder="Search for your city..."
                       className="form-control"
-                      autoComplete="off"
+                      autofocus="on"
+                      onChange={handleCityChange}
                     />
                   </div>
                   <div className="col-3">
@@ -44,56 +61,12 @@ export default function Weather(props) {
               </form>
             </div>
           </div>
-          <div className="row gx-1 mb-3">
-            <div className="col-4 p-2 mr-2 text-center">
-              <div className="today">
-                <h3>
-                  <strong>
-                    <span>{weatherData.city}</span>
-                  </strong>
-                </h3>
-                <h4>
-                  Last updated at <FormattedDate date={weatherData.date} />
-                </h4>
-                <h1 className="temperature">
-                  {Math.round(weatherData.temperature)}°F
-                </h1>
-                <div className="units">
-                  <a href="\">°F</a> |{" "}
-                  <a href="\" className="">
-                    °C
-                  </a>
-                </div>
-                <br />
-                <div className="clearfix weather-temperature">
-                  <img
-                    src={weatherData.iconUrl}
-                    alt={weatherData.description}
-                    className="icon"
-                  />
-                  <h2 className="text-capitalize">{weatherData.description}</h2>
-                </div>
-              </div>
-            </div>
-            <div className="col-4 p-2 mr-2 text-center">
-              <div className="today-details">
-                <ul>
-                  <li>High: {Math.round(weatherData.maxTemp)}%</li>
-                  <li>Low: {Math.round(weatherData.minTemp)}%</li>
-                  <li>Humidity: {weatherData.humidity}%</li>
-                  <li>Wind: {weatherData.wind}km/h</li>
-                </ul>
-              </div>
-            </div>
-          </div>
+          <WeatherInfo data={weatherData} />
         </div>
       </div>
     );
   } else {
-    const apiKey = "b81ed97f9866e819de89275fbfb832d1";
-    let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${props.defaultCity}&appid=${apiKey}&units=imperial`;
-    axios.get(apiUrl).then(handleResponse);
-
+    search();
     return "Loading...";
   }
 }
