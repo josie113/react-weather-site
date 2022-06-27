@@ -12,7 +12,7 @@ export default function App() {
           This project was coded by Josie Harvey and is{" "}
           <a
             href="https://github.com/josie113/react-weather-site"
-            target="blank"
+            target="_blank" rel="noopener noreferrer"
           >
             open-sourced on Github
           </a>
