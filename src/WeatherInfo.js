@@ -17,7 +17,7 @@ export default function WeatherInfo(props) {
             <h4>
               Last updated at <FormattedDate date={props.data.date} />
             </h4>
-            <WeatherTemperature fahrenheit={props.data.temperature} />
+            <WeatherTemperature fahrenheit={Math.round(props.data.temperature)} />
             <br />
             <div className="clearfix weather-temperature">
               <WeatherIcon code={props.data.icon} size={60} />
