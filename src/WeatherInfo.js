@@ -7,7 +7,7 @@ export default function WeatherInfo(props) {
   return (
     <div className="WeatherInfo">
       <div className="row gx-1 mb-3">
-        <div className="col-4 p-2 mr-2 text-center">
+        <div className="col-6 p-2 mr-2 text-center">
           <div className="today">
             <h3>
               <strong>
